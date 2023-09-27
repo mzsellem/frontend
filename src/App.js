@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
+  const [details, setDetails] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000')
+      .then(res => {
+        setDetails(res.data);
+      })
+      .catch(err => {
+        // Handle error if needed
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div>
+      <header>
+        Data Generated From Django
       </header>
+      <hr></hr>
+      {details.map((output, id) => (
+        <div key={id}>
+          <div>
+            <h2>{output.employee}</h2>
+            <h3>{output.department}</h3>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
